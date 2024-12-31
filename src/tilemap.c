@@ -1,6 +1,11 @@
 #include "tilemap.h"
+#include "SDL_image.h"
 #include "SDL_rect.h"
 #include "SDL_render.h"
+#include "vector.h"
+#include "window.h"
+
+static SDL_Texture *tiles = NULL;
 
 int *IsTileBlocking(int tile) {
   int *blocking = (int *)malloc(sizeof(int) * 4);
@@ -39,8 +44,8 @@ SDL_Rect GetTileRect(int tileIndex) {
   return rect;
 }
 
-void DrawTile(SDL_Texture *tiles, SDL_Renderer *renderer, int tile, int x,
-              int y) {
+static void DrawTile(SDL_Texture *tiles, SDL_Renderer *renderer, int tile,
+                     int x, int y) {
   if (tile == TILE_EMPTY) {
     return;
   }
@@ -168,11 +173,31 @@ int mapData[MAP_HEIGHT][MAP_WIDTH] = {
      TILE_WALL_BOTTOM_RIGHT},
 };
 
-SDL_Rect GetTileRectFromMap(int row, int col, float cameraX, float cameraY) {
-  int posX = col * TILE_SIZE;
-  int posY = row * TILE_SIZE;
-  int tileX = posX - (int)cameraX;
-  int tileY = posY - (int)cameraY;
-
-  return (SDL_Rect){tileX, tileY, TILE_SIZE, TILE_SIZE};
+void InitTilemap(SDL_Renderer *ren, SDL_Window *win) {
+  SDL_Surface *tileSurface = IMG_Load("./assets/tech/tileset x1.png");
+  if (!tileSurface) {
+    SDL_Log("IMG_Load Error: %s\n", IMG_GetError());
+    SDL_DestroyRenderer(ren);
+    SDL_DestroyWindow(win);
+    IMG_Quit();
+    SDL_Quit();
+    exit(1);
+  }
+  tiles = SDL_CreateTextureFromSurface(ren, tileSurface);
+  SDL_FreeSurface(tileSurface);
 }
+
+void DrawTilemap(SDL_Renderer *ren) {
+  Vector2 camera = GetCameraPosition();
+
+  for (int row = 0; row < MAP_HEIGHT; row++) {
+    for (int col = 0; col < MAP_WIDTH; col++) {
+      int tile = mapData[row][col];
+      int posX = (col * TILE_SIZE) - (int)camera.x;
+      int posY = (row * TILE_SIZE) - (int)camera.y;
+      DrawTile(tiles, ren, tile, posX, posY);
+    }
+  }
+}
+
+void DestroyTilemap() { SDL_DestroyTexture(tiles); }

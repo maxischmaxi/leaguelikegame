@@ -4,9 +4,6 @@
 #include "SDL_rect.h"
 #include "SDL_render.h"
 
-#define SCREEN_WIDTH 1200
-#define SCREEN_HEIGHT 800
-
 #define MAP_WIDTH 25
 #define MAP_HEIGHT 18
 #define MAX_TILES_X 37
@@ -30,9 +27,9 @@ enum {
 
 int mapData[MAP_HEIGHT][MAP_WIDTH];
 SDL_Rect GetTileRect(int tileIndex);
-void DrawTile(SDL_Texture *tiles, SDL_Renderer *renderer, int tile, int x,
-              int y);
 int *IsTileBlocking(int tile);
-SDL_Rect GetTileRectFromMap(int row, int col, float cameraX, float cameraY);
+void DrawTilemap(SDL_Renderer *ren);
+void InitTilemap(SDL_Renderer *ren, SDL_Window *win);
+void DestroyTilemap();
 
 #endif
