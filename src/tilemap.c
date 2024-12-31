@@ -167,3 +167,12 @@ int mapData[MAP_HEIGHT][MAP_WIDTH] = {
      TILE_WALL_BOTTOM,      TILE_WALL_BOTTOM, TILE_WALL_BOTTOM,
      TILE_WALL_BOTTOM_RIGHT},
 };
+
+SDL_Rect GetTileRectFromMap(int row, int col, float cameraX, float cameraY) {
+  int posX = col * TILE_SIZE;
+  int posY = row * TILE_SIZE;
+  int tileX = posX - (int)cameraX;
+  int tileY = posY - (int)cameraY;
+
+  return (SDL_Rect){tileX, tileY, TILE_SIZE, TILE_SIZE};
+}
