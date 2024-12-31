@@ -21,6 +21,7 @@ $ ./game
 - Weapons / Projectiles
 - Powerups
 - Enemies
+- Healthbar Check
 - Levels
 - Score
 - Waves

@@ -1,29 +1,44 @@
 #include "SDL_rect.h"
 #include "tilemap.h"
 
-unsigned int GetSpriteIndex(int dirX, int dirY) {
-  // there are six different rows of sprites
-  unsigned int positionIndex = 0;
+Uint32 GetSpriteIndex(int dirX, int dirY, int lastDirX, int lastDirY) {
+  Uint32 spriteIndex = 0;
 
   if (dirX == 1 && dirY == 1) { // right down
-    positionIndex = 5;
+    spriteIndex = 5;
   } else if (dirX == 1 && dirY == -1) { // right up
-    positionIndex = 4;
+    spriteIndex = 4;
   } else if (dirX == -1 && dirY == 1) { // left down
-    positionIndex = 1;
+    spriteIndex = 1;
   } else if (dirX == -1 && dirY == -1) { // left up
-    positionIndex = 2;
+    spriteIndex = 2;
   } else if (dirX == 1 && dirY == 0) { // right
-    positionIndex = 5;
+    spriteIndex = 5;
   } else if (dirX == -1 && dirY == 0) { // left
-    positionIndex = 1;
+    spriteIndex = 1;
   } else if (dirX == 0 && dirY == 1) { // down
-    positionIndex = 0;
+    spriteIndex = 0;
   } else if (dirX == 0 && dirY == -1) { // up
-    positionIndex = 3;
+    spriteIndex = 3;
+  } else {
+    if (lastDirX == 1 && lastDirY == -1) { // right up
+      spriteIndex = 4;
+    } else if (lastDirX == -1 && lastDirY == 1) { // left down
+      spriteIndex = 1;
+    } else if (lastDirX == -1 && lastDirY == -1) { // left up
+      spriteIndex = 2;
+    } else if (lastDirX == 1 && lastDirY == 0) { // right
+      spriteIndex = 5;
+    } else if (lastDirX == -1 && lastDirY == 0) { // left
+      spriteIndex = 1;
+    } else if (lastDirX == 0 && lastDirY == 1) { // down
+      spriteIndex = 0;
+    } else if (lastDirX == 0 && lastDirY == -1) { // up
+      spriteIndex = 3;
+    } 
   }
 
-  return positionIndex;
+  return spriteIndex;
 }
 
 SDL_Rect GetPlayerHitbox(int playerPosX, int playerPosY) {

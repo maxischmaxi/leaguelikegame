@@ -2,7 +2,8 @@
 #define PLAYER_H
 
 #include "SDL_rect.h"
-unsigned int GetSpriteIndex(int dirX, int dirY);
+
+Uint32 GetSpriteIndex(int dirX, int dirY, int lastDirX, int lastDirY);
 SDL_Rect GetPlayerHitbox(int playerPosX, int playerPosY);
 
 #endif

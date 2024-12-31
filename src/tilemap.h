@@ -4,8 +4,9 @@
 #include "SDL_rect.h"
 #include "SDL_render.h"
 
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
+#define SCREEN_WIDTH 1200
+#define SCREEN_HEIGHT 800
+
 #define MAP_WIDTH 25
 #define MAP_HEIGHT 18
 #define MAX_TILES_X 37

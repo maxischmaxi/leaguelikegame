@@ -1,6 +1,7 @@
 #include "SDL_image.h"
 #include "SDL_log.h"
 #include "SDL_render.h"
+#include "SDL_ttf.h"
 #include "SDL_video.h"
 #include "tilemap.h"
 #include <stdlib.h>
@@ -10,17 +11,7 @@ void DrawBlackScreen(SDL_Renderer *ren) {
   SDL_RenderClear(ren);
 }
 
-void CalculateAccumulator(int *moving, float *appliedSpeed, float *accumulator,
-                          unsigned int *surfaceIndex) {
-  float accumulatorThreshold = (*moving ? 0.075f : 0.25f) * *appliedSpeed;
-
-  if (*accumulator >= accumulatorThreshold) {
-    *surfaceIndex = (*surfaceIndex + 1) % 8;
-    *accumulator -= accumulatorThreshold;
-  }
-}
-
-SDL_Window *Init() {
+SDL_Window *InitWindow() {
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     SDL_Log("SDL_Init Error: %s\n", SDL_GetError());
     exit(1);
@@ -32,12 +23,15 @@ SDL_Window *Init() {
     exit(1);
   }
 
+  TTF_Init();
+
   SDL_Window *win =
       SDL_CreateWindow("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                        SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
   if (!win) {
     SDL_Log("SDL_CreateWindow Error: %s\n", SDL_GetError());
     IMG_Quit();
+    TTF_Quit();
     SDL_Quit();
     exit(1);
   }
@@ -74,6 +68,23 @@ SDL_Texture *LoadTileTexture(SDL_Renderer *ren, SDL_Window *win) {
   SDL_FreeSurface(tileSurface);
 
   return tiles;
+}
+
+SDL_Texture *LoadHealthbarTexture(SDL_Renderer *ren, SDL_Window *win) {
+  SDL_Surface *healthbarSurface = IMG_Load("./assets/PixelUI/06.png");
+  if (!healthbarSurface) {
+    SDL_Log("IMG_Load Error: %s\n", IMG_GetError());
+    SDL_DestroyRenderer(ren);
+    SDL_DestroyWindow(win);
+    IMG_Quit();
+    SDL_Quit();
+    exit(1);
+  }
+  SDL_Texture *healthbarTexture =
+      SDL_CreateTextureFromSurface(ren, healthbarSurface);
+  SDL_FreeSurface(healthbarSurface);
+
+  return healthbarTexture;
 }
 
 SDL_Texture *LoadIdleTexture(SDL_Renderer *ren, SDL_Window *win) {
