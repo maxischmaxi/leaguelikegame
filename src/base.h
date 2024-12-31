@@ -2,6 +2,7 @@
 #define BASE_H
 
 #include "SDL_render.h"
+#include "SDL_ttf.h"
 #include "SDL_video.h"
 
 void DrawBlackScreen(SDL_Renderer *ren);
@@ -12,5 +13,6 @@ SDL_Texture *LoadIdleTexture(SDL_Renderer *renderer, SDL_Window *window);
 SDL_Texture *LoadWalkTexture(SDL_Renderer *renderer, SDL_Window *window);
 void CalculateAccumulator(int *moving, float *appliedSpeed, float *accumulator,
                           unsigned int *surfaceIndex);
+TTF_Font *LoadFont();
 
 #endif

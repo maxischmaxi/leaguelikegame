@@ -1,9 +1,9 @@
 #include "SDL_events.h"
+#include "SDL_keycode.h"
 #include "SDL_rect.h"
 #include "SDL_render.h"
 #include "SDL_video.h"
 #include "base.h"
-#include "keyboard.h"
 #include "player.h"
 #include "tilemap.h"
 #include <SDL.h>
@@ -11,21 +11,73 @@
 #include <stdio.h>
 #include <string.h>
 
-static Uint32 lastTime = 0;
-static Uint32 surfaceIndex = 0;
-static float accumulator = 0.0f;
-static float cameraX = 0.0f;
-static float cameraY = 0.0f;
-static float speed = 100.0f;
-static float playerX = 0.0f;
-static float playerY = 0.0f;
-static float scale = 3.0f;
-static int gameRunning = 1;
-static int moving = 0;
-static int keyDownW = 0;
-static int keyDownS = 0;
-static int keyDownA = 0;
-static int keyDownD = 0;
+Uint32 lastTime = 0;
+Uint32 surfaceIndex = 0;
+float accumulator = 0.0f;
+float cameraX = 0.0f;
+float cameraY = 0.0f;
+float speed = 100.0f;
+float playerX = 0.0f;
+float playerY = 0.0f;
+float scale = 3.0f;
+int gameRunning = 1;
+int moving = 0;
+int keyDownW = 0;
+int keyDownS = 0;
+int keyDownA = 0;
+int keyDownD = 0;
+int autoShoot = 0;
+
+void HandleKeyUp(SDL_Event *event) {
+  if (event->type == SDL_KEYUP) {
+    switch (event->key.keysym.sym) {
+    case SDLK_w:
+      keyDownW = 0;
+      break;
+    case SDLK_s:
+      keyDownS = 0;
+      break;
+    case SDLK_a:
+      keyDownA = 0;
+      break;
+    case SDLK_d:
+      keyDownD = 0;
+      break;
+    default:
+      break;
+    }
+
+    if (!keyDownW && !keyDownS && !keyDownA && !keyDownD) {
+      moving = 0;
+    }
+  }
+}
+
+void HandleKeyDown(SDL_Event *event) {
+  if (event->type == SDL_KEYDOWN) {
+    switch (event->key.keysym.sym) {
+    case SDLK_SPACE:
+      autoShoot = autoShoot ? 0 : 1;
+      break;
+    case SDLK_w:
+      keyDownW = 1;
+      break;
+    case SDLK_s:
+      keyDownS = 1;
+      break;
+    case SDLK_a:
+      keyDownA = 1;
+      break;
+    case SDLK_d:
+      keyDownD = 1;
+      break;
+    default:
+      break;
+    }
+
+    moving = keyDownW || keyDownS || keyDownA || keyDownD;
+  }
+}
 
 int main(int argc, char *argv[]) {
   SDL_Window *win = Init();
@@ -50,9 +102,8 @@ int main(int argc, char *argv[]) {
         break;
       }
 
-      HandleKeyUp(&event, &keyDownW, &keyDownS, &keyDownA, &keyDownD, &moving);
-      HandleKeyDown(&event, &keyDownW, &keyDownS, &keyDownA, &keyDownD,
-                    &moving);
+      HandleKeyUp(&event);
+      HandleKeyDown(&event);
     }
 
     float appliedSpeed = speed / 100.0f;
