@@ -6,6 +6,7 @@
 #include "components/autoshoot-status-indicator.h"
 #include "components/healthbar.h"
 #include "components/player.h"
+#include "components/projectile.h"
 #include "tilemap.h"
 #include "window.h"
 #include <SDL.h>
@@ -26,6 +27,7 @@ int main(int argc, char *argv[]) {
   InitTilemap(ren, win);
   InitPlayer(ren, win);
   InitAutoShootIndicator(ren, font);
+  InitProjectiles();
 
   while (gameRunning) {
     if (lastTime == 0) {
@@ -60,6 +62,7 @@ int main(int argc, char *argv[]) {
 
     DrawTilemap(ren);
     DrawPlayer(ren, deltaTime);
+    DrawProjectiles(ren, deltaTime, currentTime);
     DrawHealthbar(ren);
     DrawAutoShootIndicator(ren);
 
@@ -71,6 +74,7 @@ int main(int argc, char *argv[]) {
   DestroyTilemap();
   DestroyPlayer();
   DestroyAutoShootIndicator();
+  DestroyProjectiles();
 
   TTF_CloseFont(font);
 

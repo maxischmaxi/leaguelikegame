@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -g -std=c99 -I/usr/local/include/SDL2
 LIBS = -L/usr/local/lib -lSDL2 -lSDL2_image -lSDL2_ttf
-OBJS = game.o tilemap.o player.o base.o healthbar.o autoshoot-status-indicator.o window.o vector.o 
+OBJS = game.o tilemap.o player.o base.o healthbar.o autoshoot-status-indicator.o window.o vector.o projectile.o
 
 all: game
 
@@ -31,6 +31,9 @@ window.o: src/window.c
 	$(CC) -c $< $(CFLAGS) -o $@
 
 vector.o: src/vector.c
+	$(CC) -c $< $(CFLAGS) -o $@
+
+projectile.o: src/components/projectile.c
 	$(CC) -c $< $(CFLAGS) -o $@
 
 clean:

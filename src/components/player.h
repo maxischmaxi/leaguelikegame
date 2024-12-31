@@ -18,5 +18,11 @@ float GetSpeed();
 Uint8 GetMoving();
 Uint32 GetHP();
 void SetHP(Uint32 newHP);
+float GetShootRate();
+void SetShootRate(float newShootRate);
+float GetBulletSpeed();
+void SetBulletSpeed(float newBulletSpeed);
+float GetBulletRange();
+void SetBulletRange(float newBulletRange);
 
 #endif

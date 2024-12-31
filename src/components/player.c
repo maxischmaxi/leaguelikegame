@@ -6,6 +6,9 @@
 #include "SDL_render.h"
 #include "SDL_stdinc.h"
 
+static float bulletRange = 400.0f;
+static float bulletSpeed = 200.0f;
+static float shootRate = 1.0f;
 static Uint32 hp = 2;
 static float accumulator = 0.0f;
 static Uint32 spriteIndex = 0;
@@ -181,3 +184,17 @@ void DestroyPlayer() {
 void SetHP(Uint32 newHP) { hp = newHP; }
 
 Uint32 GetHP() { return hp; }
+
+float GetSpeed() { return speed; }
+
+float GetShootRate() { return shootRate; }
+
+void SetShootRate(float newShootRate) { shootRate = newShootRate; }
+
+float GetBulletSpeed() { return bulletSpeed; }
+
+void SetBulletSpeed(float newBulletSpeed) { bulletSpeed = newBulletSpeed; }
+
+float GetBulletRange() { return bulletRange; }
+
+void SetBulletRange(float newBulletRange) { bulletRange = newBulletRange; }

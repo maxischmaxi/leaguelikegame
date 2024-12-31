@@ -1,10 +1,10 @@
 #include "../window.h"
 #include "SDL_render.h"
-#include "SDL_stdinc.h"
 #include "SDL_surface.h"
 #include "SDL_ttf.h"
+#include <stdbool.h>
 
-static Uint32 autoShoot = 0;
+static bool autoShoot = false;
 static SDL_Surface *autoShootSurface = NULL;
 static SDL_Color color = {255, 255, 255, 255};
 static SDL_Texture *textTexture = NULL;
@@ -37,7 +37,7 @@ void InitAutoShootIndicator(SDL_Renderer *ren, TTF_Font *font) {
 }
 
 void ToggleAutoShoot(SDL_Renderer *ren, TTF_Font *font) {
-  autoShoot = autoShoot ? 0 : 1;
+  autoShoot = autoShoot ? false : true;
   SDL_DestroyTexture(textTexture);
   CreateAutoShootText(ren, font);
   SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
@@ -48,3 +48,7 @@ void DrawAutoShootIndicator(SDL_Renderer *ren) {
 }
 
 void DestroyAutoShootIndicator() { SDL_DestroyTexture(textTexture); }
+
+bool GetAutoShoot() { return autoShoot; }
+
+void SetAutoShoot(bool value) { autoShoot = value; }
